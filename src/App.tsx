@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import { Container } from '@material-ui/core';
+
 import { db } from './shared/firebase';
+import Header from './components/common/Header';
 
 interface IBeer {
   name: string;
@@ -22,23 +24,28 @@ const App: React.FC<any> = () => {
   }, []);
 
   return (
-    <div>
-      {beers.map((beer: IBeer) => {
-        return (
-          <>
-            <p>
-              <b>{beer.name}</b>
-            </p>
-            <p>{beer.style}</p>
-            <ul>
-              {beer.tags.map((tag) => (
-                <li>{tag}</li>
-              ))}
-            </ul>
-          </>
-        );
-      })}
-    </div>
+    <>
+      <Header />
+      <Container maxWidth="lg">
+        <div>
+          {beers.map((beer: IBeer) => {
+            return (
+              <>
+                <p>
+                  <b>{beer.name}</b>
+                </p>
+                <p>{beer.style}</p>
+                <ul>
+                  {beer.tags.map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </>
+            );
+          })}
+        </div>
+      </Container>
+    </>
   );
 };
 
