@@ -28,7 +28,7 @@ const Header: React.FC<any> = () => {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} component="h6" noWrap>
             Beer Vote
           </Typography>
           <UserMenu />

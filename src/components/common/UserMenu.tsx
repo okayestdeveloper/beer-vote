@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+
+import { useProfile } from './../../hooks/useProfile';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,8 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const UserMenu: React.FC<any> = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  // todo: this is temporary. Replace with a custom hook, I think
+  const [profile, setProfile] = useProfile();
   const [auth, setAuth] = useState<boolean>(false);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -30,13 +32,14 @@ const UserMenu: React.FC<any> = () => {
 
   const handleSignIn = () => {
     handleClose();
-    // todo: replace with a setter on a custom hook that uses a sign in dialog component
+    // todo: pop open a dialog
+    setProfile({ email: 'brad.ledbetter@gmail.com', name: 'Brad' });
     setAuth(true);
   };
 
   const handleSignOut = () => {
     handleClose();
-    // todo: replace with a setter on a custom hook
+    setProfile({ email: '', name: '' });
     setAuth(false);
   };
 
@@ -44,11 +47,23 @@ const UserMenu: React.FC<any> = () => {
     if (auth) {
       return <MenuItem onClick={handleSignOut}>Sign out</MenuItem>;
     }
-    return <MenuItem onClick={handleSignIn}>Register or Sign In</MenuItem>;
+    return <MenuItem onClick={handleSignIn}>Sign In</MenuItem>;
+  };
+
+  const welcomeMessage = () => {
+    if (profile?.name) {
+      return (
+        <Typography variant="subtitle1" noWrap>
+          Welcome, {profile.name}
+        </Typography>
+      );
+    }
+    return '';
   };
 
   return (
     <div>
+      {welcomeMessage()}
       <IconButton
         aria-label="account of current user"
         aria-controls="menu-appbar"
