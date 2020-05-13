@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BeerList rendering should render a list of beers 1`] = `
+<div>
+  <div
+    className="MuiPaper-root MuiCard-root makeStyles-beerCard-1 MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <div
+      className="MuiCardHeader-root"
+    >
+      <div
+        className="MuiCardHeader-content"
+      >
+        <span
+          className="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
+        >
+          Valkyrie
+        </span>
+        <span
+          className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+        >
+          Chocolate Stout
+        </span>
+      </div>
+    </div>
+    <div
+      className="MuiCardContent-root"
+    >
+      <p
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+      >
+        A dark chocolate milk stout.
+      </p>
+      <p
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+      >
+        6
+        % - 
+        7
+        % ABV
+      </p>
+    </div>
+    <div
+      className="MuiCardActions-root MuiCardActions-spacing"
+    >
+      <p
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+      >
+        543
+         Votes
+      </p>
+      <button
+        aria-label="upvote"
+        className="MuiButtonBase-root MuiIconButton-root"
+        data-testid="upvoteButton"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root makeStyles-upvoteIcon-2"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 8V4l8 8-8 8v-4H4V8z"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="MuiPaper-root MuiCard-root makeStyles-beerCard-1 MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <div
+      className="MuiCardHeader-root"
+    >
+      <div
+        className="MuiCardHeader-content"
+      >
+        <span
+          className="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
+        >
+          Seeker
+        </span>
+        <span
+          className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+        >
+          Juicy Pale Ale
+        </span>
+      </div>
+    </div>
+    <div
+      className="MuiCardContent-root"
+    >
+      <p
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+      >
+        An American Pale Ale with tropical, fruity hops.
+      </p>
+      <p
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+      >
+        5.5
+        %
+      </p>
+    </div>
+    <div
+      className="MuiCardActions-root MuiCardActions-spacing"
+    >
+      <p
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+      >
+        32
+         Votes
+      </p>
+      <button
+        aria-label="upvote"
+        className="MuiButtonBase-root MuiIconButton-root"
+        data-testid="upvoteButton"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root makeStyles-upvoteIcon-2"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 8V4l8 8-8 8v-4H4V8z"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

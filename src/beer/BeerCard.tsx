@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     beerCard: {
       maxWidth: '33%',
     },
-    upvote: {
+    upvoteIcon: {
       color: green[700],
       transform: 'rotate(270deg)',
     },
@@ -48,7 +48,8 @@ const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
 
   // todo: add some indicator of a beer that's being brewed or available? Maybe configurable by props...
   // note: any other modifications for beers available vs. brewing or voting?
-  // todo: tags, serving formats.
+  // todo: tags (pills), serving formats (images/icons). Avatar? Colored header vaguely based on SRM?
+  // todo: an image from cloud storage.
 
   return (
     <Card className={classes.beerCard}>
@@ -63,8 +64,12 @@ const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
         <Typography variant="body2" color="textPrimary" component="p">
           {beer.votes} Votes
         </Typography>
-        <IconButton aria-label="upvote" onClick={handleUpvote}>
-          <Forward className={classes.upvote} />
+        <IconButton
+          aria-label="upvote"
+          onClick={handleUpvote}
+          data-testid="upvoteButton"
+        >
+          <Forward className={classes.upvoteIcon} />
         </IconButton>
       </CardActions>
     </Card>
