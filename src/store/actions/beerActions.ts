@@ -1,4 +1,4 @@
-import { ThunkDispatch } from 'redux-thunk';
+import { ThunkResult, apiFail } from './../actionTypes';
 
 import {
   BeerActionTypes,
@@ -7,30 +7,27 @@ import {
 } from './beerActionTypes';
 import beerApi from '../../beer/beerApi';
 import { IBeer } from '../../beer/beerTypes';
-import { API_FAIL } from '../actionTypes';
 
 export const upvoteBeer = (beer: IBeer): BeerActionTypes => ({
   type: UPVOTE_BEER_SUCCESS,
   beer,
 });
 
-export const loadBeers = () => (
-  dispatch: ThunkDispatch<IBeer[], undefined, BeerActionTypes>,
+export const loadBeersSuccess = (beers: IBeer[]): BeerActionTypes => ({
+  type: LOAD_BEERS_SUCCESS,
+  beers,
+});
+
+export const loadBeers = (): ThunkResult<Promise<void>, IBeer[]> => (
+  dispatch,
 ) => {
-  beerApi
+  return beerApi
     .loadBeers()
     .then((beers: IBeer[]) => {
-      dispatch({
-        type: LOAD_BEERS_SUCCESS,
-        beers,
-      });
+      dispatch(loadBeersSuccess(beers));
     })
     .catch((error) => {
       // todo: set up a snackbar for error messaging
-      dispatch({
-        type: API_FAIL,
-        message: 'Failed to load beers from database.',
-        error,
-      });
+      dispatch(apiFail('Failed to load beers from database.', error));
     });
 };
