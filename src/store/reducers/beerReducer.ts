@@ -1,10 +1,16 @@
 import {
-  IBeerReducer,
   UPVOTE_BEER_SUCCESS,
   LOAD_BEERS_SUCCESS,
-} from '../actions/beerActionTypes';
+  IBeerState,
+  BeerActionTypes,
+} from './../actions/beerActionTypes';
 
-const beerReducer: IBeerReducer = (state = [], action) => {
+export const initialBeerState: IBeerState = [];
+
+const beerReducer = (
+  state = initialBeerState,
+  action: BeerActionTypes,
+): IBeerState => {
   switch (action.type) {
     case LOAD_BEERS_SUCCESS:
       return action.beers;

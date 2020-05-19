@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import beers from './reducers/beerReducer';
+import beerReducer from './reducers/beerReducer';
 
 export const rootReducer = combineReducers({
-  beers,
+  beers: beerReducer, // note: do I want this to be beer: beerReducer?
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { AnyAction } from 'redux';
 
 import { IAPIFailAction } from '../actionTypes';
 import { IBeer } from '../../beer/beerTypes';
@@ -7,12 +7,13 @@ export const LOAD_BEERS_SUCCESS = 'LOAD_BEERS_SUCCESS';
 export const UPVOTE_BEER_SUCCESS = 'UPVOTE_BEER_SUCCESS';
 export const UPVOTE_BEER_FAIL = 'UPVOTE_BEER_FAIL';
 
-export interface ILoadBeersSuccessAction
-  extends Action<typeof LOAD_BEERS_SUCCESS> {
+export interface ILoadBeersSuccessAction extends AnyAction {
+  type: typeof LOAD_BEERS_SUCCESS;
   beers: IBeer[];
 }
 
-export interface IUpvoteBeerAction extends Action<typeof UPVOTE_BEER_SUCCESS> {
+export interface IUpvoteBeerAction extends AnyAction {
+  type: typeof UPVOTE_BEER_SUCCESS;
   beer: IBeer;
 }
 
@@ -21,4 +22,4 @@ export type BeerActionTypes =
   | IUpvoteBeerAction
   | IAPIFailAction;
 
-export type IBeerReducer = (state: IBeer[], action: BeerActionTypes) => IBeer[];
+export type IBeerState = IBeer[];

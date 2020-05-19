@@ -6,13 +6,13 @@ import { IBeer } from '../beer/beerTypes';
 import { loadBeers, upvoteBeer } from '../store/actions/beerActions';
 import { RootState } from '../store';
 
-interface IHomePageProps {
+export interface IHomePageProps {
   beers: IBeer[];
   loadBeers: () => void;
   upvoteBeer: (beer: IBeer) => void;
 }
 
-const HomePage: React.FC<IHomePageProps> = ({
+export const HomePage: React.FC<IHomePageProps> = ({
   beers,
   loadBeers,
   upvoteBeer,
