@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App rendering by route should render the HomePage on the / path 1`] = `
+Array [
+  <div>
+    header
+  </div>,
+  <div
+    className="MuiContainer-root MuiContainer-maxWidthLg"
+  >
+    <div>
+      home page
+    </div>
+  </div>,
+]
+`;
