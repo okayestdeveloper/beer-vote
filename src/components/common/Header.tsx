@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1,
+      marginBottom: theme.spacing(2),
     },
     title: {
       marginLeft: theme.spacing(2),
@@ -21,6 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+// todo: tests
+
 const Header: React.FC<any> = () => {
   const classes = useStyles();
 
@@ -28,7 +31,7 @@ const Header: React.FC<any> = () => {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} component="h6" noWrap>
+          <Typography className={classes.title} variant="h5" noWrap>
             Beer Vote
           </Typography>
           <UserMenu />
