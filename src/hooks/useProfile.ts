@@ -10,10 +10,11 @@ export interface IProfile {
   name: string;
 }
 
+const defaultProfile: IProfile = { email: '', name: '' };
+
 export const useProfile: ProfileHook = () => {
   const storageKey = 'beer-vote-profile';
   const [profile, setProfile] = useState<IProfile | null>(null);
-  const defaultProfile: IProfile = { email: '', name: '' };
 
   const hashEmail = (email: string): string => {
     const hash = crypto.createHash('sha256');
