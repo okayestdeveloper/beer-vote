@@ -37,5 +37,5 @@ export function debounce<F extends DebounceableFunction>(
  * @returns {boolean}
  */
 export function isValidEmail(email: string): boolean {
-  return /^\w+([\.-]?\w+)*@[\.\-\w]+/.test(email);
+  return /^\w+([.-]?\w+)*@[.\-\w]+/.test(email);
 }
