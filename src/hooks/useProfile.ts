@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import crypto from 'crypto';
 
+// todo: tests
+
 const salt = process.env.REACT_APP_SALT;
 
 type ProfileHook = () => [IProfile | null, (p: IProfile) => void];

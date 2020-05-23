@@ -119,7 +119,7 @@ const SignInForm: React.FC<ISignInProps> = ({ signIn, visible }) => {
         />
         <TextField
           label="Name"
-          value={name}
+          value={formState.name}
           onChange={handleChange}
           id="name"
           required

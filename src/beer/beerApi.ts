@@ -11,7 +11,8 @@ const loadBeers: ILoadBeersApi = () => {
     .then((snapshot) => {
       const beers: IBeer[] = [];
       snapshot.forEach((doc) => {
-        beers.push(doc.data() as IBeer);
+        const beer = { ...doc.data(), id: doc.id } as IBeer;
+        beers.push(beer);
       });
       return beers;
     });
