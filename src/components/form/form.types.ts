@@ -1,26 +1,18 @@
 import React from 'react';
 import { Subject } from 'rxjs';
 
-export interface ControlValidation {
-  [validationKey: string]: boolean;
-}
-
-export type ControlValidator = (value: string) => string | null;
-export type ControlValidatorFunction = (...args: any[]) => ControlValidator;
-
-export interface ControlValidators {
-  [validationKey: string]: ControlValidator | ControlValidatorFunction;
-}
-
 export interface ControlValidationState {
   [validationKey: string]: string | null;
 }
 
+export type ControlValidator = (value: string) => ControlValidationState;
+export type ControlValidatorFunction = (...args: any[]) => ControlValidator;
+
 export interface IFormControlProps {
   initialValue?: string;
   valueChanges: Subject<string>;
-  validationChanges?: Subject<ControlValidation>;
-  validators?: ControlValidators;
+  validationChanges?: Subject<ControlValidationState>;
+  validators?: Array<ControlValidator | ControlValidatorFunction>;
   className?: string;
   helperText?: string;
   label?: string;
