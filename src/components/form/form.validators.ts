@@ -1,40 +1,51 @@
-import { ControlValidators } from './form.types';
+import {
+  ControlValidationState,
+  ControlValidatorFunction,
+  ControlValidator,
+} from './form.types';
 import { isValidEmail } from './../../shared/utils';
 
-const Validators: ControlValidators = {};
-
-Validators.required = (value: string): string | null => {
+const required: ControlValidator = (value: string): ControlValidationState => {
   if (value === null || value === undefined || value === '') {
-    return 'This field is required';
+    return { required: 'This field is required' };
   }
 
-  return null;
+  return { required: null };
 };
 
-Validators.email = (value: string): string | null => {
+const email: ControlValidator = (value: string): ControlValidationState => {
   if (!isValidEmail(value)) {
-    return 'Please enter a valid email address';
+    return { email: 'Please enter a valid email address' };
   }
 
-  return null;
+  return { email: null };
 };
 
-Validators.min = (minValue: number) => (value: string): string | null => {
-  const nValue = parseInt(value, 10);
-  if (nValue < minValue) {
-    return `${nValue} is less than the minimum ${minValue}`;
-  }
+const min: ControlValidatorFunction = (minValue: number): ControlValidator => {
+  return (value: string): ControlValidationState => {
+    const nValue = parseInt(value, 10);
+    if (nValue < minValue) {
+      return { min: `${nValue} is less than the minimum ${minValue}` };
+    }
 
-  return null;
+    return { min: null };
+  };
 };
 
-Validators.max = (maxValue: number) => (value: string): string | null => {
+const max: ControlValidatorFunction = (maxValue: number): ControlValidator => (
+  value: string,
+): ControlValidationState => {
   const nValue = parseInt(value, 10);
   if (nValue > maxValue) {
-    return `${nValue} is greater than the maximum ${maxValue}`;
+    return { max: `${nValue} is greater than the maximum ${maxValue}` };
   }
 
-  return null;
+  return { max: null };
 };
 
-export default Validators;
+export default {
+  required,
+  email,
+  min,
+  max,
+};
