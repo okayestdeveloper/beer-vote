@@ -5,18 +5,16 @@ import {
   fireEvent,
   RenderResult,
 } from '@testing-library/react';
-import { Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 import EmailControl from './EmailControl';
-import { IFormControlProps, ControlValidationState } from '../form.types';
+import { IFormControlProps } from '../form.types';
 import Validators from '../form.validators';
 
 function renderControl(args?: Partial<IFormControlProps>): RenderResult {
   const defaultProps: IFormControlProps = {
     initialValue: '',
-    valueChanges: new Subject(),
-    validationChanges: undefined,
+    onChange: () => {},
+    onValidation: undefined,
     validators: undefined,
     className: undefined,
     helperText: undefined,
@@ -37,116 +35,100 @@ describe('EmailControl', () => {
   describe(`valueChanges`, () => {
     const oldVal = 'a@b.co';
     const newVal = 'b@c.co';
-    let valueChanges: Subject<string>;
+    let onChange: any;
 
     beforeEach(() => {
-      valueChanges = new Subject();
+      onChange = jest.fn();
     });
 
-    it(`should emit new value when the value changes`, (done) => {
+    it(`should emit new value when the value changes`, () => {
       const { getByDisplayValue } = renderControl({
         initialValue: oldVal,
-        valueChanges,
+        onChange,
       });
       const input = getByDisplayValue(oldVal);
 
-      valueChanges.pipe(take(1)).subscribe((newValue) => {
-        try {
-          expect(newValue).toEqual(newVal);
-          done();
-        } catch (error) {
-          done(error);
-        }
-      });
-
       fireEvent.change(input, { target: { value: newVal } });
+
+      expect(onChange).toHaveBeenCalledWith(newVal);
     });
 
     it(`should not emit if disabled`, () => {
-      valueChanges.next = jest.fn();
       const { getByDisplayValue } = renderControl({
         initialValue: oldVal,
         disabled: true,
-        valueChanges,
+        onChange,
       });
       const input = getByDisplayValue(oldVal);
 
       fireEvent.change(input, { target: { value: newVal } });
 
-      expect(valueChanges.next).not.toHaveBeenCalled();
+      expect(onChange).not.toHaveBeenCalled();
     });
   });
 
   describe(`validationChanges`, () => {
-    let validationChanges: Subject<ControlValidationState>;
+    let onValidation: any;
 
     beforeEach(() => {
-      validationChanges = new Subject();
+      onValidation = jest.fn();
     });
 
     it(`should not emit if disabled`, () => {
-      validationChanges.next = jest.fn();
       const { getByPlaceholderText } = renderControl({
         placeholder: 'Email',
         disabled: true,
         validators: [Validators.required],
-        validationChanges,
+        onValidation,
       });
       const input = getByPlaceholderText('Email');
 
       fireEvent.blur(input);
 
-      expect(validationChanges.next).not.toHaveBeenCalled();
+      expect(onValidation).not.toHaveBeenCalled();
     });
 
-    it(`should emit null per validation when validation finds no errors`, (done) => {
+    it(`should emit null per validation when validation finds no errors`, () => {
       const { getByPlaceholderText } = renderControl({
         placeholder: 'Email',
         initialValue: '0',
         validators: [Validators.required, Validators.min(0)],
-        validationChanges,
+        onValidation,
       });
       const input = getByPlaceholderText('Email');
 
-      validationChanges.pipe(take(1)).subscribe((validation) => {
-        expect(validation?.required).toBeNull();
-        expect(validation?.min).toBeNull();
-        done();
-      });
-
       fireEvent.blur(input);
+
+      expect(onValidation).toHaveBeenCalledWith({ required: null, min: null });
     });
 
-    it(`should emit a validation object when there are errors`, (done) => {
+    it(`should emit a validation object when there are errors`, () => {
       const { getByPlaceholderText } = renderControl({
         placeholder: 'Email',
         initialValue: '0',
         validators: [Validators.required, Validators.min(10)],
-        validationChanges,
+        onValidation,
       });
-
       const input = getByPlaceholderText('Email');
 
-      validationChanges.pipe(take(1)).subscribe((validation) => {
-        expect(validation?.required).toBeNull();
-        expect(validation?.min).not.toBeNull();
-        done();
-      });
-
       fireEvent.blur(input);
+
+      expect(onValidation).toHaveBeenCalledWith({
+        required: null,
+        min: expect.any(String),
+      });
     });
 
     it(`should not emit if there are no validators`, () => {
-      validationChanges.next = jest.fn();
       const { getByPlaceholderText } = renderControl({
         placeholder: 'Email',
-        validationChanges,
+        onValidation,
       });
       const input = getByPlaceholderText('Email');
 
       fireEvent.blur(input);
 
-      expect(validationChanges.next).not.toHaveBeenCalled();
+      expect(onValidation).not.toHaveBeenCalled();
     });
 
     it(`should override the helperText with an error string is invalid`, () => {
