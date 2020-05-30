@@ -6,8 +6,8 @@ import { validationsEqual } from '../form.utils';
 
 const EmailControl: FormControl = ({
   initialValue = '',
-  valueChanges,
-  validationChanges,
+  onChange,
+  onValidation,
   validators,
   className,
   helperText,
@@ -25,7 +25,7 @@ const EmailControl: FormControl = ({
         target: { value },
       } = event;
       setValue(value);
-      valueChanges.next(value);
+      onChange(value);
       // should I tack on the form name so I can add it in value changes?
       // Nah, handle that if I do a form group thing, maybe.
     }
@@ -57,7 +57,9 @@ const EmailControl: FormControl = ({
 
     if (!validationsEqual(_validations, validations)) {
       setValidations(_validations);
-      validationChanges?.next(_validations);
+      if (onValidation) {
+        onValidation(_validations);
+      }
     }
   };
 

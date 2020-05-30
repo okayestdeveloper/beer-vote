@@ -33,7 +33,6 @@ const UserMenu: React.FC<any> = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [profile, setProfile] = useProfile();
-  let tempProfile: IProfile | undefined;
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -45,21 +44,14 @@ const UserMenu: React.FC<any> = () => {
     }
   };
 
-  const handleExited = () => {
-    if (tempProfile) {
-      setProfile({ ...tempProfile });
-      tempProfile = undefined;
-    }
-  };
-
   const handleSignIn = ({ email, name }: IProfile) => {
     handleClose({}, '');
-    tempProfile = { email, name };
+    setProfile({ email, name });
   };
 
   const handleSignOut = () => {
     handleClose({}, '');
-    tempProfile = { email: '', name: '' };
+    setProfile({ email: '', name: '' });
   };
 
   const signOutMenu = () => {
@@ -128,7 +120,6 @@ const UserMenu: React.FC<any> = () => {
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        onExited={handleExited}
       >
         {signInOrOut()}
       </Popover>

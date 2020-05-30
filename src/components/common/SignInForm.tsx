@@ -12,7 +12,8 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
 import { IProfile } from './../../hooks/useProfile';
-import { isValidEmail } from './../../shared/utils';
+import EmailControl from './../form/controls/EmailControl';
+import Validators from './../form/form.validators';
 
 // todo: tests
 
@@ -22,7 +23,6 @@ export interface ISignInProps {
 }
 
 interface ISignInFormState extends IProfile {
-  emailError: boolean;
   nameError: boolean;
 }
 
@@ -54,7 +54,6 @@ const SignInForm: React.FC<ISignInProps> = ({ signIn, visible }) => {
   const [formState, setFormState] = useState<ISignInFormState>({
     email: '',
     name: '',
-    emailError: false,
     nameError: false,
   });
 
@@ -76,13 +75,6 @@ const SignInForm: React.FC<ISignInProps> = ({ signIn, visible }) => {
 
   const validate = (event: FocusEvent<HTMLInputElement>) => {
     switch (event.target.id) {
-      case 'email':
-        if (!event.target.value || !isValidEmail(event.target.value)) {
-          setFormState({ ...formState, emailError: true });
-        } else {
-          setFormState({ ...formState, emailError: false });
-        }
-        break;
       case 'name':
         if (!event.target.value) {
           setFormState({ ...formState, nameError: true });
@@ -91,6 +83,10 @@ const SignInForm: React.FC<ISignInProps> = ({ signIn, visible }) => {
         }
         break;
     }
+  };
+
+  const handleEmailChange = (email: string) => {
+    setFormState({ ...formState, email });
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -103,19 +99,11 @@ const SignInForm: React.FC<ISignInProps> = ({ signIn, visible }) => {
     <Box className={classes.signInFormContainer}>
       <Typography variant="body1">Sign In</Typography>
       <form onSubmit={handleSignIn} className={classes.signInForm}>
-        <TextField
+        <EmailControl
           label="Email"
-          value={formState.email}
-          onChange={handleChange}
-          id="email"
-          type="email"
-          required
+          onChange={handleEmailChange}
+          validators={[Validators.required, Validators.email]}
           className={classes.formControl}
-          onBlur={validate}
-          error={formState.emailError}
-          helperText={
-            formState.emailError ? 'Please enter a valid email address.' : ''
-          }
         />
         <TextField
           label="Name"
