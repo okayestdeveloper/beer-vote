@@ -1,14 +1,15 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 
 import { ControlValidationState, FormControl } from '../form.types';
 import { validationsEqual } from '../form.utils';
+import Validators from './../form.validators';
 
 const EmailControl: FormControl = ({
   initialValue = '',
   onChange,
   onValidation,
-  validators,
+  validators = [Validators.email],
   className,
   helperText,
   label = 'Email',
@@ -19,6 +20,20 @@ const EmailControl: FormControl = ({
   const [valid, setValid] = useState<boolean>(true);
   const [validations, setValidations] = useState<ControlValidationState>({});
 
+  useEffect(() => {
+    // Add in the email validator if there are validators. This allows the user
+    // to remove all validation, but requires email validation if any validation
+    // is added.
+    if (validators && validators.length > 0) {
+      const found = validators.find(
+        (validator) => validator === Validators.email,
+      );
+      if (!found) {
+        validators.push(Validators.email);
+      }
+    }
+  }, [validators]);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!disabled) {
       const {
@@ -26,8 +41,6 @@ const EmailControl: FormControl = ({
       } = event;
       setValue(value);
       onChange(value);
-      // should I tack on the form name so I can add it in value changes?
-      // Nah, handle that if I do a form group thing, maybe.
     }
   };
 

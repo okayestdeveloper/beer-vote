@@ -91,22 +91,8 @@ describe('EmailControl', () => {
     it(`should emit null per validation when validation finds no errors`, () => {
       const { getByPlaceholderText } = renderControl({
         placeholder: 'Email',
-        initialValue: '0',
-        validators: [Validators.required, Validators.min(0)],
-        onValidation,
-      });
-      const input = getByPlaceholderText('Email');
-
-      fireEvent.blur(input);
-
-      expect(onValidation).toHaveBeenCalledWith({ required: null, min: null });
-    });
-
-    it(`should emit a validation object when there are errors`, () => {
-      const { getByPlaceholderText } = renderControl({
-        placeholder: 'Email',
-        initialValue: '0',
-        validators: [Validators.required, Validators.min(10)],
+        initialValue: 'a@b.com',
+        validators: [Validators.required, Validators.email],
         onValidation,
       });
       const input = getByPlaceholderText('Email');
@@ -115,7 +101,24 @@ describe('EmailControl', () => {
 
       expect(onValidation).toHaveBeenCalledWith({
         required: null,
-        min: expect.any(String),
+        email: null,
+      });
+    });
+
+    it(`should emit a validation object when there are errors`, () => {
+      const { getByPlaceholderText } = renderControl({
+        placeholder: 'Email',
+        initialValue: '0',
+        validators: [Validators.required, Validators.email],
+        onValidation,
+      });
+      const input = getByPlaceholderText('Email');
+
+      fireEvent.blur(input);
+
+      expect(onValidation).toHaveBeenCalledWith({
+        required: null,
+        email: expect.any(String),
       });
     });
 
@@ -123,6 +126,7 @@ describe('EmailControl', () => {
       const { getByPlaceholderText } = renderControl({
         placeholder: 'Email',
         onValidation,
+        validators: [],
       });
       const input = getByPlaceholderText('Email');
 
