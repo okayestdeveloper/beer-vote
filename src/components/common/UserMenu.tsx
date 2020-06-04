@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { useProfile, IProfile } from './../../hooks/useProfile';
-import SignInForm from './SignInForm';
+import SignInForm, { ISignInFormState } from './SignInForm';
 
 // todo: tests
 
@@ -20,8 +20,18 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       marginRight: theme.spacing(2),
     },
+    signInFormContainer: {
+      margin: theme.spacing(1),
+      padding: theme.spacing(1),
+      minWidth: '25rem',
+    },
     signOutButton: {
       margin: theme.spacing(1),
+    },
+    signInButton: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+      alignSelf: 'flex-end',
     },
     welcomeMessage: {
       marginRight: theme.spacing(1),
@@ -33,25 +43,41 @@ const UserMenu: React.FC<any> = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [profile, setProfile] = useProfile();
+  const [formState, setFormState] = useState<ISignInFormState>({
+    email: '',
+    name: '',
+    valid: true,
+  });
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  // todo: refactor to move sign in button out of the sign in form.
+  // Put it here and make the sign in form just emit the form value and validity
+  // onClose, make a promise that is resolved onClosed and handle setProfile there
+
+  const handleExited = () => {
+    const { email, name } = formState;
+    setProfile({ email, name });
+  };
 
   const handleClose = (event: object, reason: string) => {
-    if (profile?.name || reason !== 'tabKeyDown') {
+    if ((profile?.email && profile?.name) || reason !== 'tabKeyDown') {
       setAnchorEl(null);
     }
   };
 
-  const handleSignIn = ({ email, name }: IProfile) => {
-    handleClose({}, '');
-    setProfile({ email, name });
+  const handleFormChange = (state: ISignInFormState) => {
+    setFormState(state);
   };
 
   const handleSignOut = () => {
+    setFormState({ email: '', name: '', valid: true });
     handleClose({}, '');
-    setProfile({ email: '', name: '' });
+  };
+
+  const handleSignIn = () => {
+    handleClose({}, '');
   };
 
   const signOutMenu = () => {
@@ -68,7 +94,21 @@ const UserMenu: React.FC<any> = () => {
   };
 
   const signInFormPopover = () => {
-    return <SignInForm signIn={handleSignIn} visible={Boolean(anchorEl)} />;
+    return (
+      <Box className={classes.signInFormContainer}>
+        <SignInForm onChange={handleFormChange} />
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={!formState.valid}
+          className={classes.signInButton}
+          onClick={handleSignIn}
+        >
+          Sign In
+        </Button>
+      </Box>
+    );
   };
 
   const signInOrOut = () => {
@@ -120,6 +160,7 @@ const UserMenu: React.FC<any> = () => {
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        onExited={handleExited}
       >
         {signInOrOut()}
       </Popover>
