@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
+import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,8 +10,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { useProfile, IProfile } from './../../hooks/useProfile';
 import SignInForm, { ISignInFormState } from './SignInForm';
-
-// todo: tests
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,9 +51,6 @@ const UserMenu: React.FC<any> = () => {
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  // todo: refactor to move sign in button out of the sign in form.
-  // Put it here and make the sign in form just emit the form value and validity
-  // onClose, make a promise that is resolved onClosed and handle setProfile there
 
   const handleExited = () => {
     const { email, name } = formState;
@@ -80,23 +76,24 @@ const UserMenu: React.FC<any> = () => {
     handleClose({}, '');
   };
 
-  const signOutMenu = () => {
+  const signOutMenu = (classes: ClassNameMap) => {
     return (
       <Button
         className={classes.signOutButton}
         variant="contained"
         color="primary"
         onClick={handleSignOut}
+        data-testid="signOutButton"
       >
-        Sign out
+        Sign Out
       </Button>
     );
   };
 
-  const signInFormPopover = () => {
+  const signInFormPopover = (classes: ClassNameMap) => {
     return (
       <Box className={classes.signInFormContainer}>
-        <SignInForm onChange={handleFormChange} />
+        <SignInForm onChange={handleFormChange} data-testid="signInForm" />
         <Button
           variant="contained"
           color="primary"
@@ -104,6 +101,7 @@ const UserMenu: React.FC<any> = () => {
           disabled={!formState.valid}
           className={classes.signInButton}
           onClick={handleSignIn}
+          data-testid="signInButton"
         >
           Sign In
         </Button>
@@ -111,21 +109,22 @@ const UserMenu: React.FC<any> = () => {
     );
   };
 
-  const signInOrOut = () => {
+  const signInOrOut = (profile: IProfile | null, classes: ClassNameMap) => {
     if (profile?.name) {
-      return signOutMenu();
+      return signOutMenu(classes);
     }
 
-    return signInFormPopover();
+    return signInFormPopover(classes);
   };
 
-  const welcomeMessage = () => {
+  const welcomeMessage = (profile: IProfile | null, classes: ClassNameMap) => {
     if (profile?.name) {
       return (
         <Typography
           variant="subtitle1"
           noWrap
           className={classes.welcomeMessage}
+          data-testid="welcomeMessage"
         >
           Welcome, {profile.name}
         </Typography>
@@ -136,7 +135,7 @@ const UserMenu: React.FC<any> = () => {
 
   return (
     <Box className={classes.menuWrapper}>
-      {welcomeMessage()}
+      {welcomeMessage(profile, classes)}
       <IconButton
         aria-label="account of current user"
         aria-controls="menu-appbar"
@@ -162,7 +161,7 @@ const UserMenu: React.FC<any> = () => {
         onClose={handleClose}
         onExited={handleExited}
       >
-        {signInOrOut()}
+        {signInOrOut(profile, classes)}
       </Popover>
     </Box>
   );

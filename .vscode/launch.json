@@ -6,7 +6,7 @@
   "configurations": [
     {
       "type": "node",
-      "name": "vscode-jest-tests",
+      "name": "Jest all",
       "request": "launch",
       "args": ["test", "--runInBand"],
       "cwd": "${workspaceFolder}",
@@ -16,5 +16,17 @@
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/react-scripts",
       "protocol": "inspector"
     }
+    // {
+    //   "type": "node",
+    //   "name": "Jest current",
+    //   "request": "launch",
+    //   "args": ["test", "--runInBand", "${fileBasename}"],
+    //   "cwd": "${workspaceFolder}",
+    //   "console": "integratedTerminal",
+    //   "internalConsoleOptions": "neverOpen",
+    //   "disableOptimisticBPs": true,
+    //   "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/react-scripts",
+    //   "protocol": "inspector"
+    // }
   ]
 }
