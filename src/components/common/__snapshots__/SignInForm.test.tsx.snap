@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignInForm snapshots should render a form with email and name controls 1`] = `
+Array [
+  <p
+    className="MuiTypography-root MuiTypography-body1"
+  >
+    Sign In
+  </p>,
+  <form
+    className="makeStyles-signInForm-1"
+  >
+    <div
+      className="MuiFormControl-root MuiTextField-root makeStyles-formControl-2"
+    >
+      <label
+        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+        data-shrink={false}
+      >
+        Email
+      </label>
+      <div
+        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+        onClick={[Function]}
+      >
+        <input
+          aria-invalid={false}
+          autoFocus={false}
+          className="MuiInputBase-input MuiInput-input"
+          disabled={false}
+          name="Email"
+          onAnimationStart={[Function]}
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          placeholder="Email"
+          required={false}
+          type="email"
+          value=""
+        />
+      </div>
+      
+    </div>
+    <div
+      className="MuiFormControl-root MuiTextField-root makeStyles-formControl-2"
+    >
+      <label
+        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+        data-shrink={false}
+      >
+        Name
+      </label>
+      <div
+        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+        onClick={[Function]}
+      >
+        <input
+          aria-invalid={false}
+          autoFocus={false}
+          className="MuiInputBase-input MuiInput-input"
+          disabled={false}
+          name="Name"
+          onAnimationStart={[Function]}
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          placeholder="Name"
+          required={false}
+          type="text"
+          value=""
+        />
+      </div>
+      
+    </div>
+  </form>,
+]
+`;
