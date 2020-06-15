@@ -12,6 +12,7 @@ const beers: IBeer[] = [
     tags: ['dark', 'chocolate', 'rich'],
     status: EBeerStatus.VOTING,
     votes: 543,
+    srm: 50,
   },
   {
     id: 'beer2',
@@ -25,6 +26,7 @@ const beers: IBeer[] = [
     tags: ['juicy', 'bright', 'refreshing'],
     status: EBeerStatus.AVAILABLE,
     votes: 32,
+    srm: 10,
   },
 ];
 

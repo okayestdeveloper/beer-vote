@@ -32,7 +32,7 @@ const Header: React.FC<any> = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h5" noWrap>
-            Beer Vote
+            Valkyrie Brewing
           </Typography>
           <UserMenu />
         </Toolbar>

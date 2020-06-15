@@ -1,12 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BeerList rendering should render a list of beers 1`] = `
-<div>
+<div
+  className="makeStyles-listContainer-1"
+>
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-beerCard-1 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiCard-root makeStyles-beerCard-2 MuiPaper-elevation8 MuiPaper-rounded"
+    data-testid="beercard"
   >
     <div
       className="MuiCardHeader-root"
+      style={
+        Object {
+          "backgroundColor": "#000000",
+          "color": "white",
+        }
+      }
     >
       <div
         className="MuiCardHeader-content"
@@ -17,31 +26,68 @@ exports[`BeerList rendering should render a list of beers 1`] = `
           Valkyrie
         </span>
         <span
-          className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorInherit MuiTypography-displayBlock"
         >
           Chocolate Stout
         </span>
       </div>
     </div>
     <div
-      className="MuiCardContent-root"
+      className="MuiCardContent-root makeStyles-beerCardContent-4"
     >
       <p
-        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary MuiTypography-gutterBottom"
       >
         A dark chocolate milk stout.
       </p>
       <p
-        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary MuiTypography-gutterBottom"
       >
-        6
-        % - 
-        7
-        % ABV
+        6.0% - 7.0% ABV
       </p>
+      <div
+        className="makeStyles-tagArray-5"
+      >
+        <div
+          className="MuiChip-root makeStyles-tagChip-6 MuiChip-sizeSmall"
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+        >
+          <span
+            className="MuiChip-label MuiChip-labelSmall"
+          >
+            dark
+          </span>
+        </div>
+        <div
+          className="MuiChip-root makeStyles-tagChip-6 MuiChip-sizeSmall"
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+        >
+          <span
+            className="MuiChip-label MuiChip-labelSmall"
+          >
+            chocolate
+          </span>
+        </div>
+        <div
+          className="MuiChip-root makeStyles-tagChip-6 MuiChip-sizeSmall"
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+        >
+          <span
+            className="MuiChip-label MuiChip-labelSmall"
+          >
+            rich
+          </span>
+        </div>
+      </div>
+      <div
+        className="makeStyles-servingFormats-7"
+      />
     </div>
     <div
-      className="MuiCardActions-root MuiCardActions-spacing"
+      className="MuiCardActions-root makeStyles-actionArea-9 MuiCardActions-spacing"
     >
       <p
         className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
@@ -51,7 +97,7 @@ exports[`BeerList rendering should render a list of beers 1`] = `
       </p>
       <button
         aria-label="upvote"
-        className="MuiButtonBase-root MuiIconButton-root"
+        className="MuiButtonBase-root MuiIconButton-root makeStyles-iconButton-10"
         data-testid="upvoteButton"
         disabled={false}
         onBlur={[Function]}
@@ -74,7 +120,7 @@ exports[`BeerList rendering should render a list of beers 1`] = `
         >
           <svg
             aria-hidden="true"
-            className="MuiSvgIcon-root makeStyles-upvoteIcon-2"
+            className="MuiSvgIcon-root makeStyles-upvoteIcon-11"
             focusable="false"
             viewBox="0 0 24 24"
           >
@@ -87,10 +133,17 @@ exports[`BeerList rendering should render a list of beers 1`] = `
     </div>
   </div>
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-beerCard-1 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiCard-root makeStyles-beerCard-2 MuiPaper-elevation8 MuiPaper-rounded"
+    data-testid="beercard"
   >
     <div
       className="MuiCardHeader-root"
+      style={
+        Object {
+          "backgroundColor": "#DE7C00",
+          "color": "black",
+        }
+      }
     >
       <div
         className="MuiCardHeader-content"
@@ -101,72 +154,75 @@ exports[`BeerList rendering should render a list of beers 1`] = `
           Seeker
         </span>
         <span
-          className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorInherit MuiTypography-displayBlock"
         >
           Juicy Pale Ale
         </span>
       </div>
     </div>
     <div
-      className="MuiCardContent-root"
+      className="MuiCardContent-root makeStyles-beerCardContent-4"
     >
       <p
-        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary MuiTypography-gutterBottom"
       >
         An American Pale Ale with tropical, fruity hops.
       </p>
       <p
-        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary MuiTypography-gutterBottom"
       >
-        5.5
-        %
+        5.5%
       </p>
+      <div
+        className="makeStyles-tagArray-5"
+      >
+        <div
+          className="MuiChip-root makeStyles-tagChip-6 MuiChip-sizeSmall"
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+        >
+          <span
+            className="MuiChip-label MuiChip-labelSmall"
+          >
+            juicy
+          </span>
+        </div>
+        <div
+          className="MuiChip-root makeStyles-tagChip-6 MuiChip-sizeSmall"
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+        >
+          <span
+            className="MuiChip-label MuiChip-labelSmall"
+          >
+            bright
+          </span>
+        </div>
+        <div
+          className="MuiChip-root makeStyles-tagChip-6 MuiChip-sizeSmall"
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+        >
+          <span
+            className="MuiChip-label MuiChip-labelSmall"
+          >
+            refreshing
+          </span>
+        </div>
+      </div>
+      <div
+        className="makeStyles-servingFormats-7"
+      >
+        <img
+          alt="draught"
+          className="makeStyles-servingFormatImage-8"
+          src="draught.png"
+        />
+      </div>
     </div>
     <div
-      className="MuiCardActions-root MuiCardActions-spacing"
-    >
-      <p
-        className="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
-      >
-        32
-         Votes
-      </p>
-      <button
-        aria-label="upvote"
-        className="MuiButtonBase-root MuiIconButton-root"
-        data-testid="upvoteButton"
-        disabled={false}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onDragLeave={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseLeave={[Function]}
-        onMouseUp={[Function]}
-        onTouchEnd={[Function]}
-        onTouchMove={[Function]}
-        onTouchStart={[Function]}
-        tabIndex={0}
-        type="button"
-      >
-        <span
-          className="MuiIconButton-label"
-        >
-          <svg
-            aria-hidden="true"
-            className="MuiSvgIcon-root makeStyles-upvoteIcon-2"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 8V4l8 8-8 8v-4H4V8z"
-            />
-          </svg>
-        </span>
-      </button>
-    </div>
+      className="MuiCardActions-root makeStyles-actionArea-9 MuiCardActions-spacing"
+    />
   </div>
 </div>
 `;
