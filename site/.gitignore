@@ -1,0 +1,5 @@
+build
+coverage
+firebase.config.json
+firebase.config.js
+firebase.config.ts
