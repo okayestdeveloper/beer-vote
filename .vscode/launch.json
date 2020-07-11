@@ -6,22 +6,51 @@
   "configurations": [
     {
       "type": "node",
-      "name": "Jest all",
+      "name": "Site: Jest all",
       "request": "launch",
       "args": ["test", "--runInBand"],
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/site",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true,
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/react-scripts",
       "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "name": "Fstore: Backup",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/firestore",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "protocol": "inspector",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "program": "${workspaceFolder}/firestore/backup.js"
+    },
+    {
+      "type": "node",
+      "name": "Fstore: Restore",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/firestore",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "protocol": "inspector",
+      "env": {
+        "NODE_ENV": "local"
+      },
+      "args": ["beers.json"],
+      "program": "${workspaceFolder}/firestore/restore.js"
     }
     // {
     //   "type": "node",
-    //   "name": "Jest current",
+    //   "name": "Site: Jest current",
     //   "request": "launch",
     //   "args": ["test", "--runInBand", "${fileBasename}"],
-    //   "cwd": "${workspaceFolder}",
+    //   "cwd": "${workspaceFolder}/site",
     //   "console": "integratedTerminal",
     //   "internalConsoleOptions": "neverOpen",
     //   "disableOptimisticBPs": true,

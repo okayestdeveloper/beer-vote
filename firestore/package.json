@@ -1,0 +1,20 @@
+{
+  "name": "firestore",
+  "version": "0.1.0",
+  "description": "Utilities for managing firestore data for the beer-vote project",
+  "main": "backup.js",
+  "repository": "https://github.com/okayestdeveloper/beer-vote",
+  "author": "Brad Ledbetter",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "firebase-admin": "^8.13.0",
+    "moment": "^2.27.0"
+  },
+  "scripts": {
+    "start": "firebase emulators:start --only firestore,functions",
+    "backup:dev": "NODE_ENV=development node backup.js",
+    "restore:local": "NODE_ENV=local node restore.js beers.json"
+  }
+}
