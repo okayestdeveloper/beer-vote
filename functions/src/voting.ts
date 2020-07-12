@@ -1,5 +1,4 @@
-import { https, Request, Response } from "firebase-functions";
-import { initializeApp, firestore } from "firebase-admin";
+import { firestore } from 'firebase-admin';
 import {
   Firestore,
   DocumentSnapshot,
@@ -7,39 +6,13 @@ import {
   QuerySnapshot,
   QueryDocumentSnapshot,
   Timestamp,
-} from "@google-cloud/firestore";
+} from '@google-cloud/firestore';
+import { Request, Response } from 'express';
+import PromiseRouter from 'express-promise-router';
 
-initializeApp();
+import { IBeer, IVoting, COLLECTIONS, oneDay, voteLimit } from './shared';
 
-const oneDay = 60 * 60 * 24 * 1000;
-const voteLimit = 5;
-
-enum COLLECTIONS {
-  VOTING = "voting",
-  BEERS = "beers",
-}
-
-/**
- * Just the pieces of the beer interface we need here.
- *
- * @interface IBeer
- */
-interface IBeer {
-  id: string;
-  votes: number;
-}
-
-/**
- * Represents a voting record for a user in Firestore. We use those records to
- * track vote limits per user.
- *
- * @interface IVoting
- */
-interface IVoting extends DocumentData {
-  emailHash: string;
-  votes: number;
-  lastVote: Timestamp | null;
-}
+export const votingRoutes = PromiseRouter();
 
 /**
  * Set a new record in the voting collection. New meaning that the emailHash
@@ -51,11 +24,11 @@ interface IVoting extends DocumentData {
  */
 async function createVotingRecord(
   fstore: Firestore,
-  voting: IVoting
+  voting: IVoting,
 ): Promise<DocumentSnapshot<DocumentData>> {
   voting.lastVote = Timestamp.now();
   const ref = await fstore.collection(COLLECTIONS.VOTING).add(voting);
-  return await ref.get();
+  return ref.get();
 }
 
 /**
@@ -67,12 +40,12 @@ async function createVotingRecord(
  * @returns {Promise<IVoting>}
  */
 async function incVotes(
-  votingDoc: DocumentSnapshot<DocumentData>
+  votingDoc: DocumentSnapshot<DocumentData>,
 ): Promise<DocumentSnapshot<DocumentData>> {
   const voting = votingDoc.data() as IVoting;
   await votingDoc.ref.set(
     { lastVote: Timestamp.now(), votes: voting.votes + 1 },
-    { merge: true }
+    { merge: true },
   );
   return votingDoc; // todo: not sure this gets the updated record
 }
@@ -87,11 +60,11 @@ async function incVotes(
  */
 async function getVotingRecord(
   fstore: Firestore,
-  emailHash: string
+  emailHash: string,
 ): Promise<DocumentSnapshot<DocumentData>> {
   const snapshot = await fstore
     .collection(COLLECTIONS.VOTING)
-    .where("emailHash", "==", emailHash)
+    .where('emailHash', '==', emailHash)
     .get();
 
   if (snapshot.empty) {
@@ -100,7 +73,7 @@ async function getVotingRecord(
       votes: 0,
       lastVote: null,
     };
-    return await createVotingRecord(fstore, newVoting);
+    return createVotingRecord(fstore, newVoting);
   }
 
   return snapshot.docs[0];
@@ -115,11 +88,11 @@ async function getVotingRecord(
  */
 async function getBeerRecord(
   fstore: Firestore,
-  id: string
+  id: string,
 ): Promise<QuerySnapshot<DocumentData>> {
   const snapshot = await fstore
     .collection(COLLECTIONS.BEERS)
-    .where("id", "==", id)
+    .where('id', '==', id)
     .get();
 
   return snapshot;
@@ -132,7 +105,7 @@ async function getBeerRecord(
  * @returns {Promise<IVoting>}
  */
 async function incBeerVotes(
-  beerDoc: QueryDocumentSnapshot<DocumentData>
+  beerDoc: QueryDocumentSnapshot<DocumentData>,
 ): Promise<DocumentSnapshot<DocumentData>> {
   const beer = beerDoc.data() as IVoting;
   await beerDoc.ref.set({ votes: beer.votes + 1 }, { merge: true });
@@ -158,7 +131,7 @@ function isVotingAllowed(docSnapshot: DocumentSnapshot<DocumentData>): boolean {
 
 /**
  * Handle a request for an upvote on a beer
- * url: https://{region}-beer-vote-{dev?}.web.app/upvote/:id
+ * url: https://{region}-beer-vote-{dev?}.web.app/api/voting/upvote/:id
  * method: POST
  * params:
  *  id: string; - id of the beer to upvote
@@ -173,12 +146,14 @@ function isVotingAllowed(docSnapshot: DocumentSnapshot<DocumentData>): boolean {
  *    };
  *  }
  */
-export const upvote = https.onRequest(
+
+votingRoutes.post(
+  '/upvote/:id',
   async (request: Request, response: Response) => {
     const fstore = firestore();
-    const emailHash = request.header("Authorization")?.substr(7);
+    const emailHash = request.headers?.authorization?.substr(7);
     if (!emailHash) {
-      response.status(401).send({ message: "You must sign in to vote." });
+      response.status(401).send({ message: 'You must sign in to vote.' });
       return;
     }
 
@@ -196,7 +171,7 @@ export const upvote = https.onRequest(
     await incVotes(votingDoc);
 
     // find the beer
-    const id = request.param("id");
+    const id = request.params.id;
     const beerDoc = await getBeerRecord(fstore, id);
     if (beerDoc.empty) {
       response.status(404).end();
@@ -206,16 +181,12 @@ export const upvote = https.onRequest(
     // update the vote count on the beer
     const updatedBeerDoc = await incBeerVotes(beerDoc.docs[0]);
 
-    response.send({
-      message: "SUCCESS",
+    response.status(200).send({
+      message: 'SUCCESS',
       data: {
         id,
         votes: (updatedBeerDoc.data() as IBeer).votes,
       },
     });
-  }
+  },
 );
-
-export const ping = https.onRequest((req: Request, res: Response) => {
-  res.send({ message: "pong", data: { time: Timestamp.now() } });
-});
