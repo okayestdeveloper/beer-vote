@@ -8,7 +8,6 @@ import './index.css';
 import App from './App';
 import configureStore from './store/configureStore';
 
-// todo: init user info from localstorage
 const store = configureStore();
 
 ReactDOM.render(
