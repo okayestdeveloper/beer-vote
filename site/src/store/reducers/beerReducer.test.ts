@@ -2,7 +2,7 @@ import {
   LOAD_BEERS_SUCCESS,
   UPVOTE_BEER_SUCCESS,
   ILoadBeersSuccessAction,
-  IUpvoteBeerAction,
+  IUpvoteBeerSuccessAction,
 } from './../actions/beerActionTypes';
 import { getBeers } from './../../beer/mockData';
 import beerReducer from './beerReducer';
@@ -31,7 +31,7 @@ describe(`beerReducer`, () => {
       const beer: IBeer = JSON.parse(JSON.stringify(beers[1]));
       beer.votes += 1;
 
-      const action: IUpvoteBeerAction = {
+      const action: IUpvoteBeerSuccessAction = {
         type: UPVOTE_BEER_SUCCESS,
         beer,
       };

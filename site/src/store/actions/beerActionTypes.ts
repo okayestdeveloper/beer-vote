@@ -4,6 +4,7 @@ import { IAPIFailAction } from '../actionTypes';
 import { IBeer } from '../../beer/beerTypes';
 
 export const LOAD_BEERS_SUCCESS = 'LOAD_BEERS_SUCCESS';
+export const UPVOTE_BEER = 'UPVOTE_BEER';
 export const UPVOTE_BEER_SUCCESS = 'UPVOTE_BEER_SUCCESS';
 export const UPVOTE_BEER_FAIL = 'UPVOTE_BEER_FAIL';
 
@@ -13,6 +14,11 @@ export interface ILoadBeersSuccessAction extends AnyAction {
 }
 
 export interface IUpvoteBeerAction extends AnyAction {
+  type: typeof UPVOTE_BEER;
+  beer: IBeer;
+}
+
+export interface IUpvoteBeerSuccessAction extends AnyAction {
   type: typeof UPVOTE_BEER_SUCCESS;
   beer: IBeer;
 }
@@ -20,6 +26,7 @@ export interface IUpvoteBeerAction extends AnyAction {
 export type BeerActionTypes =
   | ILoadBeersSuccessAction
   | IUpvoteBeerAction
+  | IUpvoteBeerSuccessAction
   | IAPIFailAction;
 
 export type IBeerState = IBeer[];
