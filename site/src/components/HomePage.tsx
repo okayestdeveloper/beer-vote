@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import BeerList from '../beer/BeerList';
-import { IBeer } from '../beer/beerTypes';
-import { loadBeers, upvoteBeer } from '../store/actions/beerActions';
-import { RootState } from '../store';
+import BeerList from './../beer/BeerList';
+import { IBeer } from './../beer/beerTypes';
+import { loadBeers, upvoteBeer } from './../store/actions/beerActions';
+import { RootState } from './../store';
+import { IProfile } from './../hooks/useProfile';
 
 export interface IHomePageProps {
   beers: IBeer[];
   loadBeers: () => void;
-  upvoteBeer: (beer: IBeer) => void;
+  upvoteBeer: (beer: IBeer, profile: IProfile) => void;
 }
 
 export const HomePage: React.FC<IHomePageProps> = ({

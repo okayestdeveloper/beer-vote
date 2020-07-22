@@ -1,3 +1,5 @@
+import { IProfile } from './../hooks/useProfile';
+
 export const BEER_COLOR_MAP: Array<string> = [
   '#FFE699',
   '#FFD878',
@@ -86,10 +88,10 @@ export interface IBeer {
 // Props
 export interface IBeerListProps {
   beers: IBeer[];
-  upvoteBeer: (beer: IBeer) => void;
+  upvoteBeer: (beer: IBeer, profile: IProfile) => void;
 }
 
 export interface IBeerCardProps {
   beer: IBeer;
-  upvote: (beer: IBeer) => void;
+  upvote: (beer: IBeer, profile: IProfile) => void;
 }

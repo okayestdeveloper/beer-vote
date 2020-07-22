@@ -3,8 +3,6 @@ import {
   Firestore,
   DocumentSnapshot,
   DocumentData,
-  QuerySnapshot,
-  QueryDocumentSnapshot,
   Timestamp,
 } from '@google-cloud/firestore';
 import { Request, Response } from 'express';
@@ -47,7 +45,8 @@ async function incVotes(
     { lastVote: Timestamp.now(), votes: voting.votes + 1 },
     { merge: true },
   );
-  return votingDoc; // todo: not sure this gets the updated record
+
+  return await votingDoc.ref.get();
 }
 
 /**
@@ -68,6 +67,7 @@ async function getVotingRecord(
     .get();
 
   if (snapshot.empty) {
+    console.info('Did not find voting record, creating one.');
     const newVoting: IVoting = {
       emailHash,
       votes: 0,
@@ -75,6 +75,7 @@ async function getVotingRecord(
     };
     return createVotingRecord(fstore, newVoting);
   }
+  console.info('Found voting record', snapshot.docs[0]);
 
   return snapshot.docs[0];
 }
@@ -89,13 +90,13 @@ async function getVotingRecord(
 async function getBeerRecord(
   fstore: Firestore,
   id: string,
-): Promise<QuerySnapshot<DocumentData>> {
-  const snapshot = await fstore
-    .collection(COLLECTIONS.BEERS)
-    .where('id', '==', id)
-    .get();
+): Promise<DocumentSnapshot> {
+  const document = await fstore.collection(COLLECTIONS.BEERS).doc(id).get();
+  if (!document.exists) {
+    throw new Error(`Did not find beer with id ${id}`);
+  }
 
-  return snapshot;
+  return document;
 }
 
 /**
@@ -105,11 +106,12 @@ async function getBeerRecord(
  * @returns {Promise<IVoting>}
  */
 async function incBeerVotes(
-  beerDoc: QueryDocumentSnapshot<DocumentData>,
+  beerDoc: DocumentSnapshot<DocumentData>,
 ): Promise<DocumentSnapshot<DocumentData>> {
   const beer = beerDoc.data() as IVoting;
   await beerDoc.ref.set({ votes: beer.votes + 1 }, { merge: true });
-  return beerDoc; // todo: not sure this gets the updated record
+
+  return await beerDoc.ref.get();
 }
 
 /**
@@ -146,47 +148,45 @@ function isVotingAllowed(docSnapshot: DocumentSnapshot<DocumentData>): boolean {
  *    };
  *  }
  */
+votingRoutes.post('/upvote/:beerId', async (req: Request, res: Response) => {
+  const fstore = firestore();
+  const emailHash = req.headers?.authorization?.substr(7);
+  if (!emailHash) {
+    res.status(401).send({ message: 'You must sign in to vote.' });
+    return;
+  }
 
-votingRoutes.post(
-  '/upvote/:id',
-  async (request: Request, response: Response) => {
-    const fstore = firestore();
-    const emailHash = request.headers?.authorization?.substr(7);
-    if (!emailHash) {
-      response.status(401).send({ message: 'You must sign in to vote.' });
-      return;
-    }
+  // check voting allowed.
+  const votingDoc = await getVotingRecord(fstore, emailHash);
 
-    // check voting allowed.
-    const votingDoc = await getVotingRecord(fstore, emailHash);
-
-    if (!isVotingAllowed(votingDoc)) {
-      response.status(403).send({
-        message: `You've reached your vote limit (${voteLimit}) for today.`,
-      });
-      return;
-    }
-
-    // bump user's vote count
-    await incVotes(votingDoc);
-
-    // find the beer
-    const id = request.params.id;
-    const beerDoc = await getBeerRecord(fstore, id);
-    if (beerDoc.empty) {
-      response.status(404).end();
-      return;
-    }
-
-    // update the vote count on the beer
-    const updatedBeerDoc = await incBeerVotes(beerDoc.docs[0]);
-
-    response.status(200).send({
-      message: 'SUCCESS',
-      data: {
-        id,
-        votes: (updatedBeerDoc.data() as IBeer).votes,
-      },
+  if (!isVotingAllowed(votingDoc)) {
+    res.status(403).send({
+      message: `You've reached your vote limit (${voteLimit}) for today.`,
     });
-  },
-);
+    return;
+  }
+
+  // bump user's vote count
+  await incVotes(votingDoc);
+
+  // find the beer
+  const beerId = req.params.beerId;
+  let beerDoc;
+  try {
+    beerDoc = await getBeerRecord(fstore, beerId);
+  } catch (ex) {
+    res.status(404).send({ message: ex.message });
+    return;
+  }
+
+  // update the vote count on the beer
+  const updatedBeerDoc = await incBeerVotes(beerDoc);
+
+  res.status(200).send({
+    message: 'SUCCESS',
+    data: {
+      id: beerId,
+      votes: (updatedBeerDoc.data() as IBeer).votes,
+    },
+  });
+});

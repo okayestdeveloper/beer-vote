@@ -17,7 +17,9 @@ import {
   EServingFormat,
   BEER_COLOR_MAP,
 } from './beerTypes';
-import { useProfile } from '../hooks/useProfile';
+import { useProfile, IProfile } from '../hooks/useProfile';
+
+// icons
 import bottle12 from './assets/12oz bottle.png';
 import bottle22 from './assets/22oz bottle.png';
 import bottle500 from './assets/500ml bottle.png';
@@ -78,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
+function BeerCard({ beer, upvote }: IBeerCardProps) {
   const classes = useStyles();
   const [profile] = useProfile();
   const titleStyle = {
@@ -86,19 +88,24 @@ const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
     color: beer.srm < 11 ? 'black' : 'white',
   };
 
-  const handleUpvote = () => {
-    upvote(beer);
-  };
+  function handleUpvote() {
+    if (profile?.email) {
+      upvote(beer, profile);
+    } else {
+      // todo: snackbar
+      window.alert('You must sign in to vote.');
+    }
+  }
 
-  const abv = (beer: IBeer): string => {
+  function abv(beer: IBeer): string {
     if (beer.status === EBeerStatus.AVAILABLE) {
       return beer.ABV ? `${beer.ABV.toFixed(1)}%` : '';
     }
 
     return `${beer.minABV.toFixed(1)}% - ${beer.maxABV.toFixed(1)}% ABV`;
-  };
+  }
 
-  const tags = (beer: IBeer): React.ReactElement[] | null => {
+  function tags(beer: IBeer): React.ReactElement[] | null {
     if (!beer.tags) {
       return null;
     }
@@ -106,9 +113,9 @@ const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
     return beer.tags.map((tag) => (
       <Chip className={classes.tagChip} label={tag} size="small" key={tag} />
     ));
-  };
+  }
 
-  const servingFormats = (beer: IBeer): React.ReactElement[] | null => {
+  function servingFormats(beer: IBeer): React.ReactElement[] | null {
     if (!beer.servingFormats?.length || beer.status !== EBeerStatus.AVAILABLE) {
       return null;
     }
@@ -123,33 +130,41 @@ const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
         />
       );
     });
-  };
+  }
 
-  const actions = (beer: IBeer): React.ReactElement => {
+  function upvoteButton(_profile: IProfile | null): React.ReactElement {
+    if (_profile?.email) {
+      return (
+        <IconButton
+          aria-label="upvote"
+          onClick={handleUpvote}
+          data-testid="upvoteButton"
+          className={classes.iconButton}
+        >
+          <Forward className={classes.upvoteIcon} />
+        </IconButton>
+      );
+    }
+
+    return <></>;
+  }
+
+  function actions(beer: IBeer, _profile: IProfile | null): React.ReactElement {
     if (beer.status === EBeerStatus.VOTING) {
       return (
         <>
           <Typography variant="body2" color="textPrimary" component="p">
             {beer.votes} Votes
           </Typography>
-          <IconButton
-            aria-label="upvote"
-            onClick={handleUpvote}
-            data-testid="upvoteButton"
-            disabled={profile?.email ? true : false}
-            className={classes.iconButton}
-          >
-            <Forward className={classes.upvoteIcon} />
-          </IconButton>
+          {upvoteButton(_profile)}
         </>
       );
     }
     return <></>;
-  };
+  }
 
   // todo: add some indicator of a beer that's being brewed or available? Maybe configurable by props...
   // note: any other modifications for beers available vs. brewing or voting?
-  // todo: tags (pills), serving formats (images/icons). Avatar? Colored header vaguely based on SRM?
   // todo: an image from cloud storage.
 
   return (
@@ -180,9 +195,11 @@ const BeerCard: React.FC<IBeerCardProps> = ({ beer, upvote }) => {
         <div className={classes.tagArray}>{tags(beer)}</div>
         <div className={classes.servingFormats}>{servingFormats(beer)}</div>
       </CardContent>
-      <CardActions className={classes.actionArea}>{actions(beer)}</CardActions>
+      <CardActions className={classes.actionArea}>
+        {actions(beer, profile)}
+      </CardActions>
     </Card>
   );
-};
+}
 
 export default BeerCard;

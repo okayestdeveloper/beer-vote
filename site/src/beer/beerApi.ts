@@ -1,28 +1,34 @@
-import firestore from '../shared/firebase';
-
 import { IBeer } from './beerTypes';
+import { IProfile } from './../hooks/useProfile';
+import { handleAPIResponse } from '../shared/utils';
 
-type ILoadBeersApi = () => Promise<IBeer[]>;
-const loadBeers: ILoadBeersApi = () => {
-  return firestore
-    .collection('beers')
-    .orderBy('votes')
-    .get()
-    .then((snapshot) => {
-      const beers: IBeer[] = [];
-      snapshot.forEach((doc) => {
-        const beer = { ...doc.data(), id: doc.id } as IBeer;
-        beers.push(beer);
-      });
-      return beers;
+function apiUrl(path: string): string {
+  const host = `${process.env.REACT_APP_API_HOST}`;
+  const project = process.env.REACT_APP_FIREBASE_PROJECT
+    ? `/${process.env.REACT_APP_FIREBASE_PROJECT}`
+    : '';
+  const region = process.env.REACT_APP_FIREBASE_REGION
+    ? `/${process.env.REACT_APP_FIREBASE_REGION}`
+    : '';
+  return `//${host}${project}${region}/api${path}`;
+}
+
+function loadBeers(): Promise<IBeer[]> {
+  return fetch(apiUrl('/beers'), { method: 'GET' }).then(handleAPIResponse);
+}
+
+function upvoteBeer(beer: IBeer, profile: IProfile): Promise<IBeer> {
+  return fetch(apiUrl(`/voting/upvote/${beer.id}`), {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${profile.email}`,
+    },
+  })
+    .then(handleAPIResponse)
+    .then((data: any) => {
+      return { ...beer, votes: data.votes };
     });
-};
-
-type IUpvoteBeerApi = (beer: IBeer) => Promise<IBeer>;
-const upvoteBeer: IUpvoteBeerApi = (beer) => {
-  // todo: write a cloud function to handle the upvote
-  return Promise.resolve(beer);
-};
+}
 
 export default {
   loadBeers,

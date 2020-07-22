@@ -10,7 +10,7 @@ export const beerRoutes = PromiseRouter();
 function getBeers(fstore: Firestore): Promise<IBeer[]> {
   return fstore
     .collection(COLLECTIONS.BEERS)
-    .orderBy('votes')
+    .orderBy('votes', 'desc')
     .get()
     .then((snapshot: QuerySnapshot) => {
       const beers: IBeer[] = [];
