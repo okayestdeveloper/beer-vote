@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -12,12 +13,12 @@ import { green } from '@material-ui/core/colors';
 
 import {
   IBeer,
-  IBeerCardProps,
   EBeerStatus,
   EServingFormat,
   BEER_COLOR_MAP,
 } from './beerTypes';
 import { useProfile, IProfile } from '../hooks/useProfile';
+import { upvoteBeer } from './beerSlice';
 
 // icons
 import bottle12 from './assets/12oz bottle.png';
@@ -80,7 +81,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function BeerCard({ beer, upvote }: IBeerCardProps) {
+export interface IBeerCardProps {
+  beer: IBeer;
+}
+
+function BeerCard({ beer }: IBeerCardProps): React.ReactElement {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [profile] = useProfile();
   const titleStyle = {
@@ -90,7 +96,7 @@ function BeerCard({ beer, upvote }: IBeerCardProps) {
 
   function handleUpvote() {
     if (profile?.email) {
-      upvote(beer, profile);
+      dispatch(upvoteBeer(beer, profile));
     } else {
       // todo: snackbar
       window.alert('You must sign in to vote.');

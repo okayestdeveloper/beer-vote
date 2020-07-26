@@ -1,5 +1,5 @@
-jest.mock('./components/HomePage');
-jest.mock('./components/common/Header');
+jest.mock('./HomePage');
+jest.mock('./common/Header');
 
 import React, { ReactElement } from 'react';
 import { Router } from 'react-router-dom';
