@@ -15,7 +15,7 @@
     "@types/redux-immutable-state-invariant": "^2.1.1",
     "dotenv": "^8.2.0",
     "firebase": "^7.14.2",
-    "immer": "^6.0.3",
+    "immer": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
